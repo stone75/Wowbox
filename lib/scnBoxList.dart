@@ -2,83 +2,84 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wowbox/scnBoxBuy.dart';
 import 'package:wowbox/scnBoxOpen.dart';
+import 'package:wowbox/scnBoxView.dart';
 
-class SceneBox extends StatefulWidget {
-  const SceneBox({super.key});
+class SceneBoxList extends StatefulWidget {
+  const SceneBoxList({super.key});
 
   @override
-  State<SceneBox> createState() => _SceneBoxState();
+  State<SceneBoxList> createState() => _SceneBoxListState();
 }
 
-class _SceneBoxState extends State<SceneBox> {
+class _SceneBoxListState extends State<SceneBoxList> {
   final List<ItemData> items = [
     ItemData(
-      id: '12345',
+      id: '1',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '2',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '3',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 0,
     ),
     ItemData(
-      id: '12345',
+      id: '4',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 0,
     ),
     ItemData(
-      id: '12345',
+      id: '5',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '6',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '7',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 0,
     ),
     ItemData(
-      id: '12345',
+      id: '8',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 0,
     ),    ItemData(
-      id: '12345',
+      id: '9',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '11',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 1,
     ),
     ItemData(
-      id: '12345',
+      id: '12',
       from: 'Wowcoin 으로 구매',
       getdate: '구매 날짜 : 2024-02-01',
       isOpend: 0,
     ),
     ItemData(
-      id: '12345',
+      id: '13',
       from: 'oidnox 님이 선물',
       getdate: '선물 받은 날짜 : 2024-01-25',
       isOpend: 0,
@@ -86,7 +87,7 @@ class _SceneBoxState extends State<SceneBox> {
   ];
 
 @override
-  void didUpdateWidget(covariant SceneBox oldWidget) {
+  void didUpdateWidget(covariant SceneBoxList oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     print("didUpdateWidget....");
@@ -158,6 +159,9 @@ class _SceneBoxState extends State<SceneBox> {
     var itemimg = (item.isOpend == 0)
         ? AssetImage('assets/opened.png')
         : AssetImage('assets/closed.jpg');
+    var nextScene = (item.isOpend == 0)
+        ? SceneBoxView(itemID : item.id)
+        : SceneBoxOpen();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -178,7 +182,7 @@ class _SceneBoxState extends State<SceneBox> {
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-              const SceneBoxOpen(),
+                nextScene,
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 const begin = Offset(-1.0, 0.0);

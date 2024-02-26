@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_navigation_bar/responsive_navigation_bar.dart';
-import 'package:wowbox/scnBox.dart';
+import 'package:wowbox/scnBoxList.dart';
 import 'package:wowbox/scnBoard.dart';
 import 'package:wowbox/scnCoin.dart';
 import 'package:wowbox/scnLogin.dart';
@@ -17,7 +17,7 @@ final iconList = <IconData>[
 
 final sceneList = <Widget>[
   SceneGoods(),
-  SceneBox(),
+  SceneBoxList(),
   SceneCoin(),
   SceneBoard(),
 ];
