@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SceneBoxOpen extends StatefulWidget {
-  const SceneBoxOpen({super.key});
+  final dynamic boxID;
+
+  const SceneBoxOpen({Key? key, required this.boxID}) : super(key: key);
 
   @override
   State<SceneBoxOpen> createState() => _SceneBoxOpenState();
@@ -24,6 +26,10 @@ class _SceneBoxOpenState extends State<SceneBoxOpen> {
                 color: Colors.amberAccent,
                 size: 160,
               ),
+            ),
+            SizedBox(height: 50),
+            Center(
+              child: Text("Box ID : ${widget.boxID}"),
             ),
             SizedBox(height: 50),
             Center(

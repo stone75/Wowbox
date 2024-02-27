@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SceneGoodsDetail extends StatefulWidget {
-  const SceneGoodsDetail({super.key});
+  final dynamic goodsID;
+
+  const SceneGoodsDetail({Key? key, required this.goodsID}) : super(key: key);
 
   @override
   State<SceneGoodsDetail> createState() => _SceneGoodsDetailState();
@@ -44,7 +46,7 @@ class _SceneGoodsDetailState extends State<SceneGoodsDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Detail'),
+        title: Text('Product Detail ${widget.goodsID}'),
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -161,7 +161,7 @@ class _SceneBoxListState extends State<SceneBoxList> {
         : AssetImage('assets/closed.jpg');
     var nextScene = (item.isOpend == 0)
         ? SceneBoxView(itemID : item.id)
-        : SceneBoxOpen();
+        : SceneBoxOpen(boxID : item.id);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),

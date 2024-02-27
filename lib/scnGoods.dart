@@ -12,60 +12,70 @@ class SceneGoods extends StatefulWidget {
 class _SceneGoodsState extends State<SceneGoods> {
   final List<ItemData> items = [
     ItemData(
+      id: 1,
       image: 'http://img.dev.wowbox.odinox.com/1691490584.png',
       title: 'Item 1',
       description: 'Description for item 1. \nThis is a sample description.',
       price: '\$19.99',
     ),
     ItemData(
+      id: 2,
       image: 'http://img.dev.wowbox.odinox.com/1692717479.png',
       title: 'Item 2',
       description: 'Description for item 2. Another sample description.',
       price: '\$29.99',
     ),
     ItemData(
+      id: 3,
       image: 'http://img.dev.wowbox.odinox.com/1691490584.png',
       title: 'Item 3',
       description: 'Description for item 3. This is a sample description.',
       price: '\$19.99',
     ),
     ItemData(
+      id: 4,
       image: 'http://img.dev.wowbox.odinox.com/1692717479.png',
       title: 'Item 4',
       description: 'Description for item 4. Another sample description.',
       price: '\$29.99',
     ),
     ItemData(
+      id: 5,
       image: 'http://img.dev.wowbox.odinox.com/1691490584.png',
       title: 'Item 5',
       description: 'Description for item 51. This is a sample description.',
       price: '\$19.99',
     ),
     ItemData(
+      id: 6,
       image: 'http://img.dev.wowbox.odinox.com/1692717479.png',
       title: 'Item 6',
       description: 'Description for item 6. Another sample description.',
       price: '\$29.99',
     ),
     ItemData(
+      id: 7,
       image: 'http://img.dev.wowbox.odinox.com/1691490584.png',
       title: 'Item 7',
       description: 'Description for item 7. This is a sample description.',
       price: '\$19.99',
     ),
     ItemData(
+      id: 8,
       image: 'http://img.dev.wowbox.odinox.com/1692717479.png',
       title: 'Item 8',
       description: 'Description for item 8. Another sample description.',
       price: '\$29.99',
     ),
     ItemData(
+      id: 9,
       image: 'http://img.dev.wowbox.odinox.com/1691490584.png',
       title: 'Item 9',
       description: 'Description for item 9. This is a sample description.',
       price: '\$19.99',
     ),
     ItemData(
+      id: 10,
       image: 'http://img.dev.wowbox.odinox.com/1692717479.png',
       title: 'Item 10',
       description: 'Description for item 10. Another sample description.',
@@ -75,6 +85,8 @@ class _SceneGoodsState extends State<SceneGoods> {
   ];
 
   Widget _buildListItem(ItemData item) {
+    final id = item.id;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -128,7 +140,7 @@ class _SceneGoodsState extends State<SceneGoods> {
           Navigator.of(context).push(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  const SceneGoodsDetail(),
+                  SceneGoodsDetail(goodsID: id),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 const begin = Offset(-1.0, 0.0);
@@ -162,12 +174,14 @@ class _SceneGoodsState extends State<SceneGoods> {
 }
 
 class ItemData {
+  final int id;
   final String image;
   final String title;
   final String description;
   final String price;
 
   ItemData({
+    required this.id,
     required this.image,
     required this.title,
     required this.description,
