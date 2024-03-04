@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_navigation_bar/responsive_navigation_bar.dart';
+import 'package:wowbox/db/dbHelper.dart';
+import 'package:wowbox/models/mdlUserInfo.dart';
 import 'package:wowbox/scnBoxList.dart';
 import 'package:wowbox/scnBoard.dart';
 import 'package:wowbox/scnCoin.dart';
@@ -7,6 +9,7 @@ import 'package:wowbox/scnLogin.dart';
 import 'package:wowbox/scnMyPage.dart';
 
 import 'scnGoods.dart';
+import 'C.dart';
 
 final iconList = <IconData>[
   Icons.card_giftcard_outlined, // 상품 리스트
@@ -40,6 +43,11 @@ class _AppMainState extends State<AppMain> {
 
   @override
   Widget build(BuildContext context) {
+    DBHelper helper = DBHelper();
+    var readUserInfo = helper.getUserInfo();
+    C.logger('----------=========');
+    C.logger(C.g_UserInfo.toString());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Wowbox"),
@@ -90,7 +98,7 @@ class _AppMainState extends State<AppMain> {
                         child: child,
                       );
                     },
-                  )
+                  ),
               );
             },
           ),

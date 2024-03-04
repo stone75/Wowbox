@@ -4,7 +4,7 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'appmain.dart';
 
 void main() {
-
+  WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(
     nativeAppKey: '322e0c114b1f0d8a7942fb0526abe2ae',
     javaScriptAppKey: 'a215b324981be3de75e54e29b365efb9',

@@ -4,6 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:http/http.dart' as http;
+import 'package:wowbox/db/dbHelper.dart';
+import 'package:wowbox/models/mdlUserInfo.dart';
+
+import 'C.dart';
 
 class SceneLogin extends StatefulWidget {
   const SceneLogin({super.key});
@@ -14,9 +18,48 @@ class SceneLogin extends StatefulWidget {
 
 class _SceneLoginState extends State<SceneLogin> {
   bool isLogined = false;
+  bool isLoading = false;
+  List<ModelUserInfo>? userinfo = null;
+
+  Future<int> fetchUserInfo(kakaoid, kakaonick, profile, thumb) async {
+    var url = C.URL_REGUSERINFO + "?domainid=${kakaoid}&nick=${kakaonick}";
+    http.Response res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      C.logger(res.toString());
+      C.logger("-----------");
+      C.logger(res.body);
+
+      var res_body = res.body;
+      var json_res_body = json.decode(res_body);
+      C.logger(json_res_body.toString());
+      C.logger(json_res_body['code'].toString());
+
+      if (json_res_body?['code'] != 200) {
+        C.logger("Error Code : ${json_res_body?['code'].toString()}");
+      }
+
+      var body = json_res_body?['body'];
+      C.logger(body.toString());
+      C.logger("SSS : ${body?['userid']}");
+      // List<dynamic> body = json.decode(res.body)['body'];
+      // userinfo = body.map((e) => ModelUserInfo.fromJson(e)).toList();
+      C.logger(userinfo.toString());
+
+      DBHelper helper = DBHelper();
+      kakaonick ??= "Kakao User";
+      profile ??= "noimage";
+      thumb ??= "noimage";
+      helper.upsertScore(ModelUserInfo(userid: body?['userid'], nick: kakaonick, profile: profile, thumbnail: thumb));
+    }
+
+    return 0;
+  }
 
   @override
   Widget build(BuildContext context) {
+    var LoginMSG = isLogined ? "Login OK" : "Not Yet";
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
@@ -45,11 +88,18 @@ class _SceneLoginState extends State<SceneLogin> {
             const SizedBox(height: 50.0),
             GestureDetector(
               onTap: () {
-                // print("test");
                 signinKakao();
               },
               child: const Image(
                 image: AssetImage('assets/kakao_login_medium_wide.png'),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Text(
+              LoginMSG,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.0,
               ),
             ),
           ],
@@ -62,8 +112,8 @@ class _SceneLoginState extends State<SceneLogin> {
     try {
       bool isInstalled = await isKakaoTalkInstalled();
 
-      print("Is Installed : " + isInstalled.toString());
-      print(await KakaoSdk.origin);
+      C.logger("Is Installed : " + isInstalled.toString());
+      C.logger(await KakaoSdk.origin);
 
       OAuthToken token = isInstalled
           ? await UserApi.instance.loginWithKakaoTalk()
@@ -79,14 +129,27 @@ class _SceneLoginState extends State<SceneLogin> {
       );
 
       final profileInfo = json.decode(response.body);
-      print(profileInfo.toString());
+      C.logger(profileInfo.toString());
 
       // 사용자 정보 가져오기
       User user = await UserApi.instance.me();
-      print('사용자 정보 요청 성공'
+      C.logger('사용자 정보 요청 성공'
           '\n회원: ${user}'
           );
+      var properties = user.properties;
+      var nick = properties?["nickname"];
+      var profile_url = properties?["profile_image"];
+      var thumb_url = properties?["thumb_image"];
 
+
+
+      fetchUserInfo(user.id, nick, profile_url, thumb_url).then((_) {
+        // fetchUserInfo(user.kakaoAccount?.ci, user.kakaoAccount?.name, user.kakaoAccount?.profile, user.kakaoAccount?.profile).then((_) {
+        setState(() {
+          isLoading = false;
+          isLogined = true;
+        });
+      });
 
       // 사용자 배송지 정보 가져오기
       // UserShippingAddresses userShippingAddress;
@@ -135,10 +198,10 @@ class _SceneLoginState extends State<SceneLogin> {
 
 
 
-      setState(() {
-        isLogined = true;
-      });
-
+      // setState(() {
+      //   isLogined = true;
+      // });
+      //
     } catch (error) {
       print('카카오톡으로 로그인 실패 $error');
     }
