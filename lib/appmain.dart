@@ -43,10 +43,17 @@ class _AppMainState extends State<AppMain> {
 
   @override
   Widget build(BuildContext context) {
+    // var targetScene;
+
     DBHelper helper = DBHelper();
     var readUserInfo = helper.getUserInfo();
     C.logger('----------=========');
     C.logger(C.g_UserInfo.toString());
+    // if (C.g_UserInfo == null || C.g_UserInfo?.userid == '0') {
+    //   targetScene = SceneLogin();
+    // } else {
+    //   targetScene = SceneMyPage();
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +71,14 @@ class _AppMainState extends State<AppMain> {
             onPressed: () {
               Navigator.of(context).push(
                 PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) => const SceneLogin(),
+                  // pageBuilder: (context, animation, secondaryAnimation) => targetScene,
+                  pageBuilder: ((context, animation, secondaryAnimation) {
+                    if (C.g_UserInfo == null || C.g_UserInfo?.userid == '0') {
+                      return SceneLogin();
+                    } else {
+                      return SceneMyPage();
+                    }
+                  }),
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
                     const begin = Offset(-1.0, 0.0);
                     const end = Offset.zero;
@@ -77,31 +91,31 @@ class _AppMainState extends State<AppMain> {
                     );
                   },
                 )
-              );
+              ).then((value) { setState(() {});});
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            iconSize: 30,
-            onPressed: () {
-              Navigator.of(context).push(
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => const SceneMyPage(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(-1.0, 0.0);
-                      const end = Offset.zero;
-                      final tween = Tween(begin: begin, end: end);
-                      final offsetAnimation = animation.drive(tween);
-
-                      return SlideTransition(
-                        position: offsetAnimation,
-                        child: child,
-                      );
-                    },
-                  ),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.person),
+          //   iconSize: 30,
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       PageRouteBuilder(
+          //         pageBuilder: (context, animation, secondaryAnimation) => const SceneMyPage(),
+          //         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          //           const begin = Offset(-1.0, 0.0);
+          //           const end = Offset.zero;
+          //           final tween = Tween(begin: begin, end: end);
+          //           final offsetAnimation = animation.drive(tween);
+          //
+          //           return SlideTransition(
+          //             position: offsetAnimation,
+          //             child: child,
+          //           );
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
       body: sceneList[_bottomNavIndex],

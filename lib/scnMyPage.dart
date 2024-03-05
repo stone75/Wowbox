@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wowbox/C.dart';
 
 class SceneMyPage extends StatefulWidget {
   const SceneMyPage({super.key});
@@ -31,6 +32,10 @@ class _SceneMyPageState extends State<SceneMyPage> {
                 onPressed: () {},
                 child: Text("ElevatedButton"),
               ),
+            ),
+            SizedBox(height: 50),
+            Center(
+              child: Text('UserInfo : ' + C.g_UserInfo.toString()),
             ),
           ],
         ),
